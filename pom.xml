@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- region Your particular project data -->
+    <groupId>com.white_sdev.templates</groupId>
+    <artifactId>private-repo-dep</artifactId>
+    <version>1.0.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Nexus managed repository with GitHub CI/CD</description>
+    <!-- This section (packaging) can be defined if the project is meant to be a desktop application or a JAR will be generated. -->
+    <packaging>jar</packaging>
+    <!--endregion-->
+
+    <properties>
+        <!-- region Configures Java version & Main full package and class name -->
+        <!-- WARNING: add release scope if 1.9 and older versions are used at build/plugins/plugin/[maven-compiler-plugin]/configuration-->
+        <java.version>19</java.version>
+        <main.class>${project.groupId}.privatedependency.WhitePrivateDependency</main.class>
+        <!--endregion-->
+        <!-- region General configurations of the project -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- endregion General configurations of the project -->
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>white-nexus-repo</id>
+            <url>http://while-lolpicker.ddns.net:8081/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.white_sdev.templates</groupId>
+            <artifactId>my-first-nexus-repo</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- region disable DockLint -->
+    <!-- Eliminates the JavaDoc problems in later versions when you have problems in the documentation -->
+    <profiles>
+        <profile>
+            <id>disable-java8-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <doclint>none</doclint>
+            </properties>
+        </profile>
+    </profiles>
+    <!-- endregion disable DockLint -->
+
+    <build>
+        <plugins>
+            <!-- region Established the java version defined in the properties' section for every scope (compatible with newer java versions) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!-- WARNING: add release property for 1.9 and older versions -->
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <!-- endregion -->
+
+            <!-- region Maven Generates JavaDocs of the project and adds it to the generated JAR-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <detectJavaApiLink>false</detectJavaApiLink>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--endregion-->
+        </plugins>
+    </build>
+
+</project>

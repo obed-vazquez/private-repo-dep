@@ -1,4 +1,4 @@
-# Application Template
+# Private Repository Dependency Usage
 This is a sample of an application that will use a library located in a private Nexus server.
 
 ## 1) What is this repository for?
