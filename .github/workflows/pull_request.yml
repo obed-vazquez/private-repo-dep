@@ -21,7 +21,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Configure settings.xml
-          run: echo "<settings><servers><server><id>nexus</id><username>${{ secrets.NEXUS_USERNAME }}</username><password>${{ secrets.NEXUS_PASSWORD }}</password></server></servers></settings>" > $HOME/.m2/settings.xml
+        run: echo "<settings><servers><server><id>nexus</id><username>${{ secrets.NEXUS_USERNAME }}</username><password>${{ secrets.NEXUS_PASSWORD }}</password></server></servers></settings>" > $HOME/.m2/settings.xml
 
       - name: Build and test
         run: |
