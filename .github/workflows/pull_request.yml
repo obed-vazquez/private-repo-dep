@@ -21,7 +21,29 @@ jobs:
           distribution: 'adopt'
 
       - name: Configure settings.xml
-        run: echo "<settings><servers><server><id>nexus</id><username>${{ secrets.NEXUS_USERNAME }}</username><password>${{ secrets.NEXUS_PASSWORD }}</password></server></servers></settings>" > $HOME/.m2/settings.xml
+        run: |
+          echo "<settings>
+              <servers>
+                  <!-- region HTTP Repository Credentials -->
+                  <!-- The id has to be the one with the mirror, so it can unblock the pull -->
+                  <server>
+                      <id>white-nexus-repo-http-unblocker</id>
+                      <username>${{ secrets.NEXUS_USERNAME }}</username>
+                      <password>${{ secrets.NEXUS_PASSWORD }}</password>
+                  </server>
+                  <!-- endregion HTTP Repository Credentials -->
+              </servers>
+              <mirrors>
+                  <!-- region HTTP Unblocker -->
+                  <!-- we need this because the private repository does not have HTTPS -->
+                  <mirror>
+                      <id>white-nexus-repo-http-unblocker</id>
+                      <mirrorOf>white-nexus-repo</mirrorOf>
+                      <url>http://while-lolpicker.ddns.net:8081/repository/maven-releases/</url>
+                  </mirror>
+                  <!-- endregion HTTP Unblocker -->
+              </mirrors>
+          </settings>" > $HOME/.m2/settings.xml
 
       - name: Build and test
         run: |
